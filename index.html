@@ -1,0 +1,1330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DiabetesGuard — Medical Prediction Portal</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: #f0f4f8;
+  color: #1a2533;
+  min-height: 100vh;
+  line-height: 1.6;
+}
+
+/* ========== LOGIN PAGE ========== */
+#login-page {
+  display: flex;
+  min-height: 100vh;
+}
+
+.login-left {
+  width: 58%;
+  background: linear-gradient(145deg, #0d3b5e 0%, #1a5276 55%, #0e6655 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 60px 70px;
+  color: #fff;
+  position: relative;
+  overflow: hidden;
+}
+.login-left::after {
+  content: '';
+  position: absolute;
+  bottom: -100px; right: -100px;
+  width: 320px; height: 320px;
+  border-radius: 50%;
+  border: 70px solid rgba(255,255,255,0.04);
+  pointer-events: none;
+}
+.login-left::before {
+  content: '';
+  position: absolute;
+  top: -70px; left: -70px;
+  width: 240px; height: 240px;
+  border-radius: 50%;
+  border: 55px solid rgba(255,255,255,0.04);
+  pointer-events: none;
+}
+
+.login-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(255,255,255,0.12);
+  padding: 6px 16px; border-radius: 20px;
+  font-size: 12px; font-weight: 500;
+  color: rgba(255,255,255,0.9);
+  margin-bottom: 28px; width: fit-content;
+  border: 1px solid rgba(255,255,255,0.2);
+}
+.pulse { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #1abc9c; animation: pulse 2s infinite; }
+@keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.5;transform:scale(1.4)} }
+
+.login-left h1 {
+  font-family: 'DM Serif Display', serif;
+  font-size: 46px; line-height: 1.15; margin-bottom: 16px;
+}
+.login-left .tagline {
+  font-size: 15px; color: rgba(255,255,255,0.7);
+  max-width: 400px; margin-bottom: 38px; line-height: 1.7;
+}
+.feature-list { list-style: none; display: flex; flex-direction: column; gap: 13px; }
+.feature-list li {
+  display: flex; align-items: center; gap: 12px;
+  font-size: 14px; color: rgba(255,255,255,0.87);
+}
+.check-circle {
+  width: 22px; height: 22px; border-radius: 50%;
+  background: #17a589;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 700; flex-shrink: 0;
+}
+.login-stats {
+  display: flex; gap: 30px; margin-top: 44px;
+  padding-top: 30px; border-top: 1px solid rgba(255,255,255,0.14);
+}
+.login-stat .num { font-family: 'DM Serif Display', serif; font-size: 26px; }
+.login-stat .lbl { font-size: 11px; color: rgba(255,255,255,0.55); margin-top: 2px; line-height: 1.4; }
+
+.login-right {
+  width: 42%;
+  background: #fff;
+  display: flex; flex-direction: column;
+  justify-content: center;
+  padding: 48px 44px;
+  overflow-y: auto;
+}
+.login-logo-row {
+  display: flex; align-items: center; gap: 9px; margin-bottom: 26px;
+}
+.logo-dot { width: 10px; height: 10px; border-radius: 50%; background: #17a589; animation: pulse 2s infinite; }
+.logo-text { font-size: 12px; font-weight: 600; color: #1a5276; text-transform: uppercase; letter-spacing: .6px; }
+
+.login-right h2 { font-size: 23px; font-weight: 600; margin-bottom: 4px; }
+.login-right .sub { font-size: 13px; color: #5d7a93; margin-bottom: 24px; }
+
+.form-group { margin-bottom: 15px; }
+.form-group label {
+  display: block; font-size: 11px; font-weight: 600;
+  color: #5d7a93; margin-bottom: 5px;
+  text-transform: uppercase; letter-spacing: .5px;
+}
+.form-input {
+  width: 100%; padding: 11px 14px;
+  border: 1.5px solid #d1dce8; border-radius: 8px;
+  font-family: 'DM Sans', sans-serif; font-size: 14px;
+  color: #1a2533; background: #f9fbfc;
+  outline: none; transition: border-color .2s, box-shadow .2s;
+}
+.form-input:focus {
+  border-color: #2e86c1;
+  box-shadow: 0 0 0 3px rgba(46,134,193,0.12);
+  background: #fff;
+}
+.form-select {
+  appearance: none; cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%235d7a93' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 14px center;
+}
+.btn-login {
+  width: 100%; padding: 12px; border-radius: 8px;
+  background: #1a5276; color: #fff;
+  font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 600;
+  border: none; cursor: pointer; transition: all .2s; margin-top: 6px;
+}
+.btn-login:hover { background: #2e86c1; transform: translateY(-1px); box-shadow: 0 6px 20px rgba(26,82,118,0.28); }
+.error-msg { font-size: 12px; color: #c0392b; margin-top: 6px; display: none; }
+.login-footer { margin-top: 16px; font-size: 11px; color: #5d7a93; text-align: center; line-height: 1.9; }
+
+
+/* ========== APP SHELL ========== */
+#app-page { display: none; min-height: 100vh; }
+
+/* SIDEBAR */
+.sidebar {
+  position: fixed; top: 0; left: 0; bottom: 0;
+  width: 230px; z-index: 100;
+  background: #1a5276;
+  display: flex; flex-direction: column;
+}
+.sb-brand {
+  padding: 20px 18px 16px;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  display: flex; align-items: center; gap: 10px;
+}
+.sb-dot { width: 9px; height: 9px; border-radius: 50%; background: #1abc9c; animation: pulse 2s infinite; flex-shrink: 0; }
+.sb-name { font-family: 'DM Serif Display', serif; font-size: 19px; color: #fff; letter-spacing: -.2px; }
+
+.sb-section { font-size: 10px; font-weight: 600; color: rgba(255,255,255,0.38); text-transform: uppercase; letter-spacing: .8px; padding: 18px 18px 7px; }
+
+.sb-nav { flex: 1; display: flex; flex-direction: column; padding: 0 10px; gap: 2px; }
+.sb-item {
+  display: flex; align-items: center; gap: 11px;
+  padding: 11px 14px; border-radius: 9px;
+  font-size: 14px; font-weight: 500;
+  color: rgba(255,255,255,0.68);
+  cursor: pointer; border: none; background: transparent;
+  width: 100%; text-align: left;
+  font-family: 'DM Sans', sans-serif;
+  transition: all .18s;
+}
+.sb-item:hover { background: rgba(255,255,255,0.1); color: #fff; }
+.sb-item.active { background: rgba(255,255,255,0.17); color: #fff; }
+.sb-item .si { font-size: 17px; width: 22px; text-align: center; flex-shrink: 0; }
+.sb-item .ai-badge { font-size: 10px; background: #17a589; color: #fff; padding: 2px 7px; border-radius: 9px; font-weight: 600; margin-left: auto; }
+
+.sb-footer {
+  padding: 14px 18px;
+  border-top: 1px solid rgba(255,255,255,0.1);
+  font-size: 11px; color: rgba(255,255,255,0.36); line-height: 1.6;
+}
+
+/* TOPBAR */
+.topbar {
+  position: fixed; top: 0; left: 230px; right: 0;
+  height: 58px; z-index: 90;
+  background: #fff; border-bottom: 1px solid #d1dce8;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 28px;
+  box-shadow: 0 1px 6px rgba(26,82,118,0.06);
+}
+.topbar-title { font-size: 15px; font-weight: 600; color: #1a2533; }
+.topbar-right { display: flex; align-items: center; gap: 12px; }
+.topbar-user { font-size: 13px; color: #5d7a93; }
+.topbar-avatar {
+  width: 34px; height: 34px; border-radius: 50%;
+  background: #17a589; display: flex; align-items: center;
+  justify-content: center; font-weight: 600; font-size: 12px;
+  color: #fff; cursor: pointer; flex-shrink: 0;
+}
+.topbar-logout {
+  padding: 6px 14px; border-radius: 15px;
+  border: 1.5px solid #d1dce8; background: transparent;
+  color: #5d7a93; font-size: 12px; font-weight: 500;
+  cursor: pointer; font-family: 'DM Sans', sans-serif; transition: all .2s;
+}
+.topbar-logout:hover { border-color: #e74c3c; color: #c0392b; background: #fff5f5; }
+
+/* MAIN AREA */
+.main {
+  margin-left: 230px;
+  margin-top: 58px;
+  padding: 32px 34px;
+  min-height: calc(100vh - 58px);
+}
+
+/* VIEWS */
+.view { display: none; }
+.view.active { display: block; }
+
+/* ========== DASHBOARD ========== */
+.dash-header { margin-bottom: 22px; }
+.dash-header h2 { font-size: 23px; font-weight: 600; }
+.dash-header p { color: #5d7a93; font-size: 13px; margin-top: 3px; }
+
+.stats-grid {
+  display: grid; grid-template-columns: repeat(4,1fr);
+  gap: 14px; margin-bottom: 22px;
+}
+.stat-card {
+  background: #fff; border-radius: 13px; padding: 18px 20px;
+  box-shadow: 0 4px 20px rgba(26,82,118,0.08);
+  border: 1px solid #d1dce8; position: relative; overflow: hidden;
+}
+.stat-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; }
+.stat-card.c-blue::before { background: #2e86c1; }
+.stat-card.c-green::before { background: #27ae60; }
+.stat-card.c-amber::before { background: #f39c12; }
+.stat-card.c-red::before { background: #e74c3c; }
+.stat-card .si { font-size: 24px; margin-bottom: 9px; }
+.stat-card .sl { font-size: 11px; color: #5d7a93; text-transform: uppercase; letter-spacing: .5px; margin-bottom: 3px; }
+.stat-card .sv { font-size: 24px; font-weight: 600; line-height: 1; }
+.stat-card .sn { font-size: 11px; color: #5d7a93; margin-top: 4px; }
+
+.cards-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.card {
+  background: #fff; border-radius: 13px; padding: 20px 22px;
+  box-shadow: 0 4px 20px rgba(26,82,118,0.08);
+  border: 1px solid #d1dce8;
+}
+.card h3 { font-size: 14px; font-weight: 600; margin-bottom: 14px; display: flex; align-items: center; gap: 7px; }
+
+.rbar-wrap { margin-bottom: 12px; }
+.rbar-top { display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 4px; }
+.rbar { height: 7px; border-radius: 4px; background: #e8eef4; overflow: hidden; }
+.rbar-fill { height: 100%; border-radius: 4px; }
+
+.tip-list { list-style: none; display: flex; flex-direction: column; gap: 9px; }
+.tip-list li { display: flex; align-items: flex-start; gap: 9px; font-size: 13px; }
+.dot { width: 7px; height: 7px; border-radius: 50%; background: #17a589; flex-shrink: 0; margin-top: 5px; }
+
+.cta-banner {
+  grid-column: 1 / -1;
+  background: linear-gradient(135deg, #1a5276 0%, #0e6655 100%);
+  border-radius: 13px; padding: 24px 28px; color: #fff;
+  display: flex; align-items: center; justify-content: space-between;
+  box-shadow: 0 4px 20px rgba(26,82,118,0.15);
+}
+.cta-banner h3 { font-size: 17px; font-weight: 600; margin-bottom: 4px; }
+.cta-banner p { font-size: 13px; opacity: .8; }
+.cta-btn {
+  padding: 10px 24px; border-radius: 20px; background: #fff;
+  color: #1a5276; font-family: 'DM Sans', sans-serif;
+  font-size: 13px; font-weight: 600; border: none; cursor: pointer;
+  white-space: nowrap; transition: all .2s;
+}
+.cta-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(0,0,0,0.18); }
+
+/* ========== CHECK DIABETES ========== */
+.view-header { margin-bottom: 22px; }
+.view-header h2 { font-size: 21px; font-weight: 600; margin-bottom: 4px; }
+.view-header p { font-size: 13px; color: #5d7a93; }
+
+.form-card {
+  background: #fff; border-radius: 13px; padding: 26px 28px;
+  box-shadow: 0 4px 20px rgba(26,82,118,0.08);
+  border: 1px solid #d1dce8;
+}
+.form-card h3 { font-size: 14px; font-weight: 600; color: #1a5276; margin-bottom: 4px; }
+.form-card .fdesc { font-size: 12px; color: #5d7a93; margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid #d1dce8; }
+
+.inp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+.inp-group { display: flex; flex-direction: column; gap: 5px; }
+.inp-group label { font-size: 11px; font-weight: 600; color: #5d7a93; text-transform: uppercase; letter-spacing: .5px; }
+.inp-group .hint { font-size: 11px; color: #5d7a93; margin-top: 2px; }
+.inp-row { display: flex; align-items: center; }
+.inp-field {
+  flex: 1; padding: 10px 13px;
+  border: 1.5px solid #d1dce8; border-radius: 8px 0 0 8px;
+  font-family: 'DM Sans', sans-serif; font-size: 14px;
+  color: #1a2533; background: #f9fbfc;
+  outline: none; transition: all .2s;
+}
+.inp-field:focus { border-color: #2e86c1; box-shadow: 0 0 0 3px rgba(46,134,193,0.12); background: #fff; }
+.inp-unit {
+  padding: 10px 10px; background: #e8eef4;
+  border: 1.5px solid #d1dce8; border-left: none;
+  border-radius: 0 8px 8px 0;
+  font-size: 11px; color: #5d7a93; white-space: nowrap;
+}
+
+.form-btns { display: flex; gap: 12px; margin-top: 22px; padding-top: 18px; border-top: 1px solid #d1dce8; }
+.btn-submit {
+  flex: 1; padding: 12px; border-radius: 8px;
+  background: #1a5276; color: #fff;
+  font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 600;
+  border: none; cursor: pointer; transition: all .2s;
+}
+.btn-submit:hover { background: #2e86c1; transform: translateY(-1px); box-shadow: 0 5px 18px rgba(26,82,118,0.28); }
+.btn-clr {
+  padding: 12px 22px; border-radius: 8px;
+  background: transparent; color: #5d7a93;
+  font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 500;
+  border: 1.5px solid #d1dce8; cursor: pointer; transition: all .2s;
+}
+.btn-clr:hover { border-color: #e74c3c; color: #c0392b; background: #fff5f5; }
+
+.result-box { margin-top: 20px; border-radius: 12px; padding: 20px; border: 1.5px solid; display: none; }
+.result-box.low { background: #f0faf5; border-color: #27ae60; }
+.result-box.moderate { background: #fffbea; border-color: #f39c12; }
+.result-box.high { background: #fff5f5; border-color: #e74c3c; }
+.res-head { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+.res-icon { font-size: 28px; }
+.res-title { font-size: 16px; font-weight: 600; }
+.res-sub { font-size: 13px; color: #5d7a93; }
+.res-bar-wrap { height: 8px; border-radius: 4px; background: #e0e0e0; margin: 10px 0; overflow: hidden; }
+.res-bar { height: 100%; border-radius: 4px; }
+.res-pills { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 8px; margin: 12px 0; }
+.res-pill { background: #f0f4f8; border-radius: 8px; padding: 8px; text-align: center; }
+.res-pill .pl { font-size: 11px; color: #5d7a93; margin-bottom: 2px; }
+.res-pill .pv { font-size: 12px; font-weight: 600; }
+.res-btns { display: flex; gap: 9px; margin-top: 14px; }
+.rbtn {
+  padding: 8px 18px; border-radius: 17px;
+  font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 500;
+  cursor: pointer; transition: all .2s;
+}
+.rbtn-primary { background: #1a5276; color: #fff; border: none; }
+.rbtn-primary:hover { background: #2e86c1; }
+.rbtn-sec { background: transparent; color: #1a5276; border: 1.5px solid #1a5276; }
+.rbtn-sec:hover { background: #eaf2fb; }
+
+/* ========== GUIDELINES ========== */
+.guide-intro {
+  background: linear-gradient(135deg, #1a5276 0%, #0e6655 100%);
+  border-radius: 13px; padding: 24px 28px; color: #fff; margin-bottom: 22px;
+}
+.guide-intro h2 { font-size: 19px; font-weight: 600; margin-bottom: 5px; }
+.guide-intro p { font-size: 13px; opacity: .82; max-width: 560px; }
+
+.guide-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.guide-card {
+  background: #fff; border-radius: 13px; padding: 20px;
+  box-shadow: 0 4px 20px rgba(26,82,118,0.08);
+  border: 1px solid #d1dce8;
+}
+.guide-card-head { display: flex; align-items: center; gap: 11px; margin-bottom: 13px; }
+.gicon { width: 37px; height: 37px; border-radius: 9px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+.gi-blue { background: #eaf2fb; }
+.gi-green { background: #eafaf1; }
+.gi-teal { background: #e8f8f5; }
+.gi-purple { background: #f4ecf7; }
+.gi-red { background: #fdf2f2; }
+.gi-amber { background: #fef9e7; }
+.guide-card h3 { font-size: 14px; font-weight: 600; }
+.guide-card ul { list-style: none; display: flex; flex-direction: column; gap: 7px; }
+.guide-card ul li { display: flex; gap: 7px; font-size: 13px; }
+.guide-card ul li::before { content: '→'; color: #17a589; font-weight: 700; flex-shrink: 0; }
+.guide-full { grid-column: 1 / -1; }
+
+.ref-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 6px; }
+.ref-table th { background: #f0f4f8; padding: 9px 13px; text-align: left; font-size: 11px; text-transform: uppercase; letter-spacing: .5px; color: #5d7a93; font-weight: 600; }
+.ref-table td { padding: 9px 13px; border-top: 1px solid #d1dce8; }
+.bdg { display: inline-block; padding: 2px 9px; border-radius: 11px; font-size: 11px; font-weight: 600; }
+.bdg-n { background: #eaf2fb; color: #1a5276; }
+.bdg-m { background: #fef9e7; color: #d68910; }
+.bdg-h { background: #fff5f5; color: #c0392b; }
+
+/* ========== PROFILE ========== */
+.prof-banner {
+  background: linear-gradient(135deg, #1a5276 0%, #0e6655 100%);
+  border-radius: 13px; padding: 26px 28px; color: #fff;
+  display: flex; align-items: center; gap: 20px; margin-bottom: 18px;
+}
+.prof-av {
+  width: 66px; height: 66px; border-radius: 50%;
+  background: rgba(255,255,255,0.2);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 25px; font-weight: 600;
+  border: 3px solid rgba(255,255,255,0.32); flex-shrink: 0;
+}
+.prof-name { font-size: 21px; font-weight: 600; margin-bottom: 3px; }
+.prof-role { font-size: 13px; opacity: .76; }
+.prof-since { font-size: 11px; opacity: .55; margin-top: 3px; }
+
+.prof-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.prof-card {
+  background: #fff; border-radius: 13px; padding: 20px;
+  box-shadow: 0 4px 20px rgba(26,82,118,0.08);
+  border: 1px solid #d1dce8;
+}
+.prof-card h3 { font-size: 11px; font-weight: 600; color: #1a5276; margin-bottom: 13px; text-transform: uppercase; letter-spacing: .5px; }
+.prof-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid #d1dce8; }
+.prof-row:last-child { border-bottom: none; }
+.prof-row .k { font-size: 12px; color: #5d7a93; }
+.prof-row .v { font-size: 12px; font-weight: 500; color: #1a2533; text-align: right; max-width: 55%; word-break: break-word; }
+
+/* ========== SHARED ========== */
+.disclaimer {
+  margin: 16px 0; padding: 11px 15px;
+  background: #fef9e7; border-radius: 8px;
+  border-left: 3px solid #f39c12;
+  font-size: 12px; color: #5d7a93;
+}
+
+.toast {
+  position: fixed; bottom: 22px; right: 22px; z-index: 9999;
+  background: #1a5276; color: #fff; padding: 12px 18px;
+  border-radius: 8px; font-size: 13px; font-weight: 500;
+  box-shadow: 0 8px 28px rgba(0,0,0,0.18);
+  opacity: 0; transform: translateY(60px); transition: all .3s ease;
+  pointer-events: none; max-width: 290px;
+}
+.toast.show { opacity: 1; transform: translateY(0); }
+.toast.t-success { background: #1e8449; }
+.toast.t-error { background: #c0392b; }
+
+@media (max-width: 880px) {
+  .login-left { display: none; }
+  .login-right { width: 100%; }
+  .stats-grid { grid-template-columns: 1fr 1fr; }
+  .cards-grid, .guide-grid, .inp-grid, .prof-grid { grid-template-columns: 1fr; }
+  .guide-full { grid-column: 1; }
+  .main { padding: 16px; }
+  .res-pills { grid-template-columns: 1fr 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- ============================================================ -->
+<!--                        LOGIN PAGE                           -->
+<!-- ============================================================ -->
+<div id="login-page">
+
+  <div class="login-left">
+    <div class="login-badge"><span class="pulse"></span> Medical AI System</div>
+    <h1>Predict.<br>Monitor.<br>Prevent.</h1>
+    <p class="tagline">An intelligent clinical portal for early-stage diabetes risk assessment powered by validated biomarkers and clinical data.</p>
+    <ul class="feature-list">
+      <li><div class="check-circle">✓</div> Clinically validated risk prediction model</li>
+      <li><div class="check-circle">✓</div> Personalised risk stratification &amp; scoring</li>
+      <li><div class="check-circle">✓</div> Medical-grade privacy &amp; HIPAA data security</li>
+      <li><div class="check-circle">✓</div> ADA &amp; WHO structured management guidelines</li>
+    </ul>
+    <div class="login-stats">
+      <div class="login-stat"><div class="num">537M+</div><div class="lbl">People with diabetes<br>globally (IDF)</div></div>
+      <div class="login-stat"><div class="num">50%</div><div class="lbl">Cases go undiagnosed<br>without screening</div></div>
+      <div class="login-stat"><div class="num">80%</div><div class="lbl">Type 2 cases are<br>preventable</div></div>
+    </div>
+  </div>
+
+  <div class="login-right">
+    <div class="login-logo-row"><div class="logo-dot"></div><span class="logo-text">DiabetesGuard Portal</span></div>
+    <h2>Patient Sign In</h2>
+    <p class="sub">Enter your details to access your health dashboard</p>
+
+    <div class="form-group">
+      <label>Full Name</label>
+      <input class="form-input" id="l-name" type="text" placeholder="Enter your full name" />
+    </div>
+    <div class="form-group">
+      <label>Email Address</label>
+      <input class="form-input" id="l-email" type="email" placeholder="Enter your email" />
+    </div>
+    <div class="form-group">
+      <label>Date of Birth</label>
+      <input class="form-input" id="l-dob" type="date" />
+    </div>
+    <div class="form-group">
+      <label>Gender</label>
+      <select class="form-input form-select" id="l-gender">
+        <option value="">Select gender</option>
+        <option>Male</option>
+        <option>Female</option>
+        <option>Other</option>
+        <option>Prefer not to say</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Phone Number</label>
+      <input class="form-input" id="l-phone" type="tel" placeholder="+91 **********" />
+    </div>
+    <div class="form-group">
+      <label>Password</label>
+      <input class="form-input" id="l-pass" type="password" placeholder="Min. 6 characters" />
+    </div>
+    <div id="l-err" class="error-msg">⚠ Please fill in all fields correctly (password min. 6 chars).</div>
+    <button class="btn-login" onclick="doLogin()">Access Dashboard →</button>
+    <p class="login-footer">🔒 Your data is encrypted under HIPAA guidelines.<br>Medical emergencies: call <strong>112</strong> immediately.</p>
+  </div>
+</div>
+
+
+<!-- ============================================================ -->
+<!--                         APP PAGE                            -->
+<!-- ============================================================ -->
+<div id="app-page">
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="sb-brand"><div class="sb-dot"></div><span class="sb-name">Dia-Predict</span></div>
+    <div class="sb-section">Main Menu</div>
+    <nav class="sb-nav">
+      <button class="sb-item active" id="sb-home" onclick="goView('dashboard')">
+        <span class="si">🏠</span> Home
+      </button>
+      <button class="sb-item" id="sb-check" onclick="goView('check')">
+        <span class="si">🔬</span> Check Diabetes <span class="ai-badge">AI</span>
+      </button>
+      <button class="sb-item" id="sb-guide" onclick="goView('guidelines')">
+        <span class="si">📋</span> Guidelines
+      </button>
+      <button class="sb-item" id="sb-profile" onclick="goView('profile')">
+        <span class="si">👤</span> Profile
+      </button>
+    </nav>
+    <div class="sb-footer">⚕️ Dia-Predict<br>For screening use only.<br>Not a clinical diagnosis.</div>
+  </div>
+
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <span class="topbar-title" id="tb-title">Dashboard</span>
+    <div class="topbar-right">
+      <span class="topbar-user" id="tb-user"></span>
+      <div class="topbar-avatar" id="tb-av" onclick="goView('profile')">?</div>
+      <button class="topbar-logout" onclick="doLogout()">↩ Logout</button>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <div class="main">
+
+    <!-- ===== DASHBOARD ===== -->
+    <div class="view active" id="view-dashboard">
+      <div class="dash-header">
+        <h2 id="dash-greet">Good day, User 👋</h2>
+        <p>Your diabetes health summary — <span id="dash-date"></span></p>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card c-blue">
+          <div class="si">🩸</div>
+          <div class="sl">Fasting Glucose</div>
+          <div class="sv" id="sv-glucose">— <span style="font-size:12px;color:#5d7a93">mg/dL</span></div>
+          <div class="sn">Normal: 70–99 mg/dL</div>
+        </div>
+        <div class="stat-card c-green">
+          <div class="si">💉</div>
+          <div class="sl">Insulin Level</div>
+          <div class="sv" id="sv-insulin">— <span style="font-size:12px;color:#5d7a93">μU/mL</span></div>
+          <div class="sn">Normal: 2–25 μU/mL</div>
+        </div>
+        <div class="stat-card c-amber">
+          <div class="si">⚖️</div>
+          <div class="sl">BMI</div>
+          <div class="sv" id="sv-bmi">—</div>
+          <div class="sn">Healthy: 18.5–24.9</div>
+        </div>
+        <div class="stat-card c-red">
+          <div class="si">❤️</div>
+          <div class="sl">Blood Pressure</div>
+          <div class="sv" id="sv-bp">— <span style="font-size:12px;color:#5d7a93">mmHg</span></div>
+          <div class="sn">Normal: 60–80 diastolic</div>
+        </div>
+      </div>
+
+      <div class="cards-grid">
+        <div class="card">
+          <h3>📊 Diabetes Risk Factors</h3>
+          <div class="rbar-wrap">
+            <div class="rbar-top"><span>Genetic predisposition</span><span style="color:#d68910;font-weight:600">Moderate</span></div>
+            <div class="rbar"><div class="rbar-fill" style="width:55%;background:#f39c12"></div></div>
+          </div>
+          <div class="rbar-wrap">
+            <div class="rbar-top"><span>Lifestyle factors</span><span style="color:#1e8449;font-weight:600">Low</span></div>
+            <div class="rbar"><div class="rbar-fill" style="width:30%;background:#27ae60"></div></div>
+          </div>
+          <div class="rbar-wrap">
+            <div class="rbar-top"><span>Age-related risk</span><span style="color:#2e86c1;font-weight:600">Normal</span></div>
+            <div class="rbar"><div class="rbar-fill" style="width:40%;background:#2e86c1"></div></div>
+          </div>
+          <div class="rbar-wrap">
+            <div class="rbar-top"><span>Metabolic markers</span><span style="color:#c0392b;font-weight:600">High</span></div>
+            <div class="rbar"><div class="rbar-fill" style="width:70%;background:#e74c3c"></div></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>💡 Today's Health Tips</h3>
+          <ul class="tip-list">
+            <li><div class="dot"></div>Monitor fasting blood glucose every morning before eating.</li>
+            <li><div class="dot"></div>Aim for at least 30 minutes of moderate exercise daily.</li>
+            <li><div class="dot"></div>Limit refined carbohydrates and sugary beverages.</li>
+            <li><div class="dot"></div>Stay hydrated — drink 8–10 glasses of water each day.</li>
+            <li><div class="dot"></div>Check feet daily for cuts, blisters, or unusual sores.</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h3>📅 Key Health Reminders</h3>
+          <ul class="tip-list">
+            <li><div class="dot" style="background:#f39c12"></div>HbA1c test recommended every 3 months.</li>
+            <li><div class="dot" style="background:#f39c12"></div>Annual eye exam for diabetic retinopathy screening.</li>
+            <li><div class="dot" style="background:#f39c12"></div>Lipid profile and kidney function tests every 6 months.</li>
+            <li><div class="dot" style="background:#f39c12"></div>Keep emergency glucose tabs accessible at all times.</li>
+            <li><div class="dot" style="background:#f39c12"></div>Schedule next consultation with your endocrinologist.</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h3>🧬 Diabetes Types Overview</h3>
+          <ul class="tip-list">
+            <li><div class="dot" style="background:#2e86c1"></div><span><strong>Type 1:</strong> Autoimmune — insulin production ceases completely.</span></li>
+            <li><div class="dot" style="background:#2e86c1"></div><span><strong>Type 2:</strong> Lifestyle-linked — insulin resistance develops over time.</span></li>
+            <li><div class="dot" style="background:#2e86c1"></div><span><strong>Gestational:</strong> Occurs during pregnancy, requires monitoring.</span></li>
+            <li><div class="dot" style="background:#2e86c1"></div><span><strong>Prediabetes:</strong> Blood sugar above normal but below diabetes threshold.</span></li>
+          </ul>
+        </div>
+
+        <div class="cta-banner">
+          <div>
+            <h3>Assess your diabetes risk</h3>
+            <p>Enter your clinical biomarkers and receive an instant AI-powered risk evaluation.</p>
+          </div>
+          <button class="cta-btn" onclick="goView('check')">Start Assessment →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== CHECK DIABETES ===== -->
+    <div class="view" id="view-check">
+      <div class="view-header">
+        <h2>🔬 Diabetes Risk Assessment</h2>
+        <p>Enter your clinical measurements. All values are used to compute your personalised risk score.</p>
+      </div>
+
+      <div class="form-card">
+        <h3>Patient Biomarker Input Form</h3>
+        <p class="fdesc">Values outside normal ranges will be flagged in your result. Consult your lab reports for accurate readings.</p>
+
+        <div class="inp-grid">
+          <div class="inp-group">
+            <label>Plasma Glucose Level</label>
+            <div class="inp-row">
+              <input class="inp-field" id="f-glucose" type="number" min="0" max="500" placeholder="e.g. 120" />
+              <span class="inp-unit">mg/dL</span>
+            </div>
+            <span class="hint">Fasting normal: 70–99 | Prediabetes: 100–125 | Diabetes: ≥126</span>
+          </div>
+
+          <div class="inp-group">
+            <label>Diastolic Blood Pressure</label>
+            <div class="inp-row">
+              <input class="inp-field" id="f-bp" type="number" min="0" max="200" placeholder="e.g. 80" />
+              <span class="inp-unit">mmHg</span>
+            </div>
+            <span class="hint">Normal diastolic: 60–80 mmHg</span>
+          </div>
+
+          <div class="inp-group">
+            <label>Skin Thickness (Triceps)</label>
+            <div class="inp-row">
+              <input class="inp-field" id="f-skin" type="number" min="0" max="100" placeholder="e.g. 23" />
+              <span class="inp-unit">mm</span>
+            </div>
+            <span class="hint">Triceps skinfold — body fat indicator. Avg: 10–30 mm</span>
+          </div>
+
+          <div class="inp-group">
+            <label>Serum Insulin Level</label>
+            <div class="inp-row">
+              <input class="inp-field" id="f-insulin" type="number" min="0" max="1000" placeholder="e.g. 85" />
+              <span class="inp-unit">μU/mL</span>
+            </div>
+            <span class="hint">Fasting normal: 2–25 μU/mL | Resistance: &gt;25</span>
+          </div>
+
+          <div class="inp-group">
+            <label>Body Mass Index (BMI)</label>
+            <div class="inp-row">
+              <input class="inp-field" id="f-bmi" type="number" min="0" max="80" step="0.1" placeholder="e.g. 28.5" />
+              <span class="inp-unit">kg/m²</span>
+            </div>
+            <span class="hint">Underweight: &lt;18.5 | Normal: 18.5–24.9 | Obese: ≥30</span>
+          </div>
+
+          <div class="inp-group">
+            <label>Diabetes Pedigree Function</label>
+            <div class="inp-row">
+              <input class="inp-field" id="f-dpf" type="number" min="0" max="3" step="0.001" placeholder="e.g. 0.627" />
+              <span class="inp-unit">score</span>
+            </div>
+            <span class="hint">Genetic score: 0.078–2.42. Higher = greater family risk</span>
+          </div>
+
+          <div class="inp-group" style="grid-column:1/-1">
+            <label>Age</label>
+            <div class="inp-row" style="max-width:250px">
+              <input class="inp-field" id="f-age" type="number" min="1" max="120" placeholder="e.g. 45" />
+              <span class="inp-unit">years</span>
+            </div>
+            <span class="hint">Risk increases significantly after age 35 in Type 2 diabetes</span>
+          </div>
+        </div>
+
+        <div class="form-btns">
+          <button class="btn-submit" onclick="calcRisk()">🧮 Calculate My Diabetes Risk</button>
+          <button class="btn-clr" onclick="clearForm()">✕ Clear All</button>
+        </div>
+
+        <div class="result-box" id="result-box"></div>
+      </div>
+
+      
+    </div>
+
+    <!-- ===== GUIDELINES ===== -->
+    <div class="view" id="view-guidelines">
+      <div class="guide-intro">
+        <h2>📋 Diabetes Management Guidelines</h2>
+        <p>Evidence-based recommendations from World Health Organization (WHO) for effective diabetes prevention and management.</p>
+      </div>
+
+      <div class="guide-grid">
+        <div class="guide-card">
+          <div class="guide-card-head"><div class="gicon gi-blue">🩸</div><h3>Blood Sugar Targets</h3></div>
+          <ul>
+            <li>Fasting plasma glucose: 80–130 mg/dL (ADA target)</li>
+            <li>Post-meal (2hr): &lt;180 mg/dL after meals</li>
+            <li>HbA1c goal: &lt;7% for most adults with diabetes</li>
+            <li>Bedtime glucose: 90–150 mg/dL</li>
+            <li>Test fasting glucose daily, post-meal as directed</li>
+          </ul>
+        </div>
+
+        <div class="guide-card">
+          <div class="guide-card-head"><div class="gicon gi-green">🥗</div><h3>Dietary Recommendations</h3></div>
+          <ul>
+            <li>Diabetic Plate Method (½ veg, ¼ protein, ¼ carbs)</li>
+            <li>Choose low glycaemic index foods (GI &lt;55)</li>
+            <li>Limit added sugars to &lt;25g per day (WHO)</li>
+            <li>Increase dietary fibre: 25–38g/day</li>
+            <li>Avoid trans fats; prefer unsaturated fats</li>
+            <li>Limit sodium to &lt;2300 mg/day</li>
+          </ul>
+        </div>
+
+        <div class="guide-card">
+          <div class="guide-card-head"><div class="gicon gi-teal">🏃</div><h3>Physical Activity</h3></div>
+          <ul>
+            <li>150 min/week of moderate aerobic activity minimum</li>
+            <li>Resistance training at least 2 days per week</li>
+            <li>Break prolonged sitting every 30 minutes</li>
+            <li>Walking 10,000 steps/day lowers glucose significantly</li>
+            <li>Monitor blood glucose before and after exercise</li>
+          </ul>
+        </div>
+
+        <div class="guide-card">
+          <div class="guide-card-head"><div class="gicon gi-purple">💊</div><h3>Medication Adherence</h3></div>
+          <ul>
+            <li>Never skip prescribed insulin or oral hypoglycaemics</li>
+            <li>Metformin is first-line therapy for Type 2 diabetes</li>
+            <li>Rotate insulin injection sites to prevent lipodystrophy</li>
+            <li>Store insulin between 2–8°C; discard if frozen</li>
+            <li>Report hypoglycaemic episodes (&lt;70 mg/dL) to doctor</li>
+          </ul>
+        </div>
+
+        <div class="guide-card">
+          <div class="guide-card-head"><div class="gicon gi-red">🚨</div><h3>Warning Signs &amp; Emergencies</h3></div>
+          <ul>
+            <li>Hypoglycaemia (&lt;70 mg/dL): trembling, confusion, sweating</li>
+            <li>Hyperglycaemia (&gt;250 mg/dL): extreme thirst, frequent urination</li>
+            <li>DKA: fruity breath, nausea, abdominal pain</li>
+            <li>Carry fast-acting carbohydrates (glucose tabs) always</li>
+            <li>Emergency care for glucose &lt;54 or &gt;400 mg/dL</li>
+          </ul>
+        </div>
+
+        <div class="guide-card">
+          <div class="guide-card-head"><div class="gicon gi-amber">🔍</div><h3>Routine Monitoring</h3></div>
+          <ul>
+            <li>HbA1c: every 3 months (6 months if well-controlled)</li>
+            <li>Eye exam: annually for diabetic retinopathy</li>
+            <li>Foot exam: every visit — sensation, pulses, skin</li>
+            <li>Kidney function (eGFR, urine albumin): annually</li>
+            <li>Lipid profile: at least once per year</li>
+          </ul>
+        </div>
+
+        <div class="guide-card guide-full">
+          <div class="guide-card-head"><div class="gicon gi-blue">📏</div><h3>Diagnostic Reference Ranges</h3></div>
+          <table class="ref-table">
+            <thead><tr><th>Marker</th><th>Normal</th><th>Prediabetes</th><th>Diabetes</th><th>Unit</th></tr></thead>
+            <tbody>
+              <tr><td>Fasting Plasma Glucose</td><td><span class="bdg bdg-n">70–99</span></td><td><span class="bdg bdg-m">100–125</span></td><td><span class="bdg bdg-h">≥126</span></td><td>mg/dL</td></tr>
+              <tr><td>2-hr Post-meal (OGTT)</td><td><span class="bdg bdg-n">&lt;140</span></td><td><span class="bdg bdg-m">140–199</span></td><td><span class="bdg bdg-h">≥200</span></td><td>mg/dL</td></tr>
+              <tr><td>HbA1c</td><td><span class="bdg bdg-n">&lt;5.7%</span></td><td><span class="bdg bdg-m">5.7–6.4%</span></td><td><span class="bdg bdg-h">≥6.5%</span></td><td>%</td></tr>
+              <tr><td>Fasting Insulin</td><td><span class="bdg bdg-n">2–25</span></td><td><span class="bdg bdg-m">25–50</span></td><td><span class="bdg bdg-h">&gt;50</span></td><td>μU/mL</td></tr>
+              <tr><td>BMI</td><td><span class="bdg bdg-n">18.5–24.9</span></td><td><span class="bdg bdg-m">25–29.9</span></td><td><span class="bdg bdg-h">≥30</span></td><td>kg/m²</td></tr>
+              <tr><td>Diastolic Blood Pressure</td><td><span class="bdg bdg-n">60–80</span></td><td><span class="bdg bdg-m">80–89</span></td><td><span class="bdg bdg-h">≥90</span></td><td>mmHg</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== PROFILE ===== -->
+    <div class="view" id="view-profile">
+      <div class="view-header">
+        <h2>👤 Patient Profile</h2>
+        <p>Your registered information and account details</p>
+      </div>
+
+      <div class="prof-banner">
+        <div class="prof-av" id="pr-av">?</div>
+        <div>
+          <div class="prof-name" id="pr-name">—</div>
+          <div class="prof-role">Registered Patient</div>
+          <div class="prof-since" id="pr-since">Joined today</div>
+        </div>
+      </div>
+
+      <div class="prof-grid">
+        <div class="prof-card">
+          <h3>Personal Information</h3>
+          <div class="prof-row"><span class="k">Full Name</span><span class="v" id="pr-fullname">—</span></div>
+          <div class="prof-row"><span class="k">Date of Birth</span><span class="v" id="pr-dob">—</span></div>
+          <div class="prof-row"><span class="k">Gender</span><span class="v" id="pr-gender">—</span></div>
+          <div class="prof-row"><span class="k">Age</span><span class="v" id="pr-age">—</span></div>
+        </div>
+        <div class="prof-card">
+          <h3>Contact Details</h3>
+          <div class="prof-row"><span class="k">Email Address</span><span class="v" id="pr-email">—</span></div>
+          <div class="prof-row"><span class="k">Phone Number</span><span class="v" id="pr-phone">—</span></div>
+          <div class="prof-row"><span class="k">Patient ID</span><span class="v" id="pr-id">—</span></div>
+          <div class="prof-row"><span class="k">Account Status</span><span class="v" style="color:#1e8449;font-weight:600">● Active</span></div>
+        </div>
+        <div class="prof-card" style="grid-column:1/-1">
+          <h3>Medical Disclaimer</h3>
+          <p style="font-size:13px;color:#5d7a93;line-height:1.8">Your information is stored locally for this session only. Dia-Predict does not transmit or store personal health data on external servers. This system is designed as a screening and educational tool. It does not replace clinical evaluation by a licensed healthcare professional. If you experience any symptoms related to high or low blood sugar, please contact your physician or call emergency services immediately.</p>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /main -->
+</div><!-- /app-page -->
+
+<div class="toast" id="toast"></div>
+
+<script>
+var user = {};
+
+/* ---- LOGIN ---- */
+function doLogin() {
+  var name  = document.getElementById('l-name').value.trim();
+  var email = document.getElementById('l-email').value.trim();
+  var dob   = document.getElementById('l-dob').value;
+  var gender= document.getElementById('l-gender').value;
+  var phone = document.getElementById('l-phone').value.trim();
+  var pass  = document.getElementById('l-pass').value;
+  var err   = document.getElementById('l-err');
+
+  if (!name || !email || !dob || !gender || !phone || pass.length < 6) {
+    err.style.display = 'block'; return;
+  }
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    err.style.display = 'block'; return;
+  }
+  err.style.display = 'none';
+
+  var dobObj = new Date(dob);
+  var age = Math.floor((Date.now() - dobObj) / (365.25 * 24 * 3600 * 1000));
+  var initials = name.split(' ').map(function(n){ return n[0]; }).join('').substring(0,2).toUpperCase();
+  var pid = 'DG-' + Math.random().toString(36).substr(2,8).toUpperCase();
+  var joined = new Date().toLocaleDateString('en-IN', {day:'numeric',month:'long',year:'numeric'});
+
+  user = { name:name, email:email, dob:dob, dobObj:dobObj, gender:gender, phone:phone, age:age, initials:initials, pid:pid, joined:joined };
+
+  /* populate topbar */
+  document.getElementById('tb-av').textContent = initials;
+  document.getElementById('tb-user').textContent = 'Hi, ' + name.split(' ')[0];
+
+  /* populate profile */
+  document.getElementById('pr-av').textContent = initials;
+  document.getElementById('pr-name').textContent = name;
+  document.getElementById('pr-since').textContent = 'Member since ' + joined;
+  document.getElementById('pr-fullname').textContent = name;
+  document.getElementById('pr-dob').textContent = dobObj.toLocaleDateString('en-IN',{day:'numeric',month:'long',year:'numeric'});
+  document.getElementById('pr-gender').textContent = gender;
+  document.getElementById('pr-age').textContent = age + ' years';
+  document.getElementById('pr-email').textContent = email;
+  document.getElementById('pr-phone').textContent = phone;
+  document.getElementById('pr-id').textContent = pid;
+
+  /* greeting */
+  var h = new Date().getHours();
+  var greet = h < 12 ? 'Good morning' : h < 18 ? 'Good afternoon' : 'Good evening';
+  document.getElementById('dash-greet').textContent = greet + ', ' + name.split(' ')[0] + ' 👋';
+  document.getElementById('dash-date').textContent = new Date().toLocaleDateString('en-IN',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+
+  /* switch pages */
+  document.getElementById('login-page').style.display = 'none';
+  document.getElementById('app-page').style.display = 'block';
+  goView('dashboard');
+  toast('Welcome, ' + name.split(' ')[0] + '!', 'success');
+}
+
+/* ---- LOGOUT ---- */
+function doLogout() {
+  document.getElementById('app-page').style.display = 'none';
+  document.getElementById('login-page').style.display = 'flex';
+  document.getElementById('l-pass').value = '';
+  toast('Logged out successfully.', '');
+}
+
+/* ---- NAVIGATION ---- */
+function goView(v) {
+  /* hide all views */
+  var views = document.querySelectorAll('.view');
+  for (var i=0; i<views.length; i++) views[i].classList.remove('active');
+  /* deactivate all sidebar items */
+  var items = document.querySelectorAll('.sb-item');
+  for (var i=0; i<items.length; i++) items[i].classList.remove('active');
+
+  document.getElementById('view-'+v).classList.add('active');
+
+  var map = {dashboard:'sb-home', check:'sb-check', guidelines:'sb-guide', profile:'sb-profile'};
+  document.getElementById(map[v]).classList.add('active');
+
+  var titles = {dashboard:'Dashboard', check:'Check Diabetes', guidelines:'Guidelines', profile:'My Profile'};
+  document.getElementById('tb-title').textContent = titles[v];
+  window.scrollTo(0,0);
+}
+
+/* ---- CALCULATE RISK ---- */
+/* ---- CALCULATE RISK  (calls Flask /predict API) ---- */
+var lastResult   = null;   /* stores latest API response for report */
+var lastInputs   = null;   /* stores latest form inputs for report  */
+function calcRisk() {
+  var glucose = parseFloat(document.getElementById('f-glucose').value);
+  var bp      = parseFloat(document.getElementById('f-bp').value);
+  var skin    = parseFloat(document.getElementById('f-skin').value);
+  var insulin = parseFloat(document.getElementById('f-insulin').value);
+  var bmi     = parseFloat(document.getElementById('f-bmi').value);
+  var dpf     = parseFloat(document.getElementById('f-dpf').value);
+  var age     = parseFloat(document.getElementById('f-age').value);
+
+  /* Basic client-side validation */
+  if (isNaN(glucose) || isNaN(bp) || isNaN(bmi) || isNaN(dpf) || isNaN(age)) {
+    toast('Please fill in at least Glucose, Blood Pressure, BMI, DPF and Age.', 'error');
+    return;
+  }
+  if (glucose < 0 || bp < 0 || bmi < 0 || age < 0) {
+    toast('Values cannot be negative.', 'error');
+    return;
+  }
+
+  /* Show loading state */
+  var btn = document.querySelector('.btn-submit');
+  btn.textContent = '⏳ Analysing…';
+  btn.disabled = true;
+
+  var payload = {
+    Glucose:                  glucose,
+    BloodPressure:            bp,
+    SkinThickness:            isNaN(skin)    ? 0 : skin,
+    Insulin:                  isNaN(insulin) ? 0 : insulin,
+    BMI:                      bmi,
+    DiabetesPedigreeFunction: dpf,
+    Age:                      age
+  };
+
+  fetch('http://127.0.0.1:5000/predict', {
+    method:  'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body:    JSON.stringify(payload)
+  })
+  .then(function(res) { return res.json(); })
+  .then(function(data) {
+    btn.textContent = '🧮 Calculate My Diabetes Risk';
+    btn.disabled = false;
+
+    if (data.error) {
+      toast('Error: ' + data.error, 'error');
+      return;
+    }
+
+    /* Save data for PDF report */
+    lastInputs = payload;
+    lastResult = data;
+
+    /* Update dashboard stat cards */
+    document.getElementById('sv-glucose').innerHTML = glucose + ' <span style="font-size:12px;color:#5d7a93">mg/dL</span>';
+    document.getElementById('sv-insulin').innerHTML = (isNaN(insulin) ? '—' : insulin) + ' <span style="font-size:12px;color:#5d7a93">μU/mL</span>';
+    document.getElementById('sv-bmi').textContent   = bmi.toFixed(1);
+    document.getElementById('sv-bp').innerHTML      = bp + ' <span style="font-size:12px;color:#5d7a93">mmHg</span>';
+
+    var pct        = data.probability;
+    var riskColor  = data.risk_color;
+    var riskLevel  = data.risk_level;
+    var riskEmoji  = data.risk_emoji;
+    var levelClass = pct < 30 ? 'low' : pct < 50 ? 'moderate' : 'high';
+
+    /* advice text per level */
+    var advice = {
+      'LOW':       'Your biomarkers look healthy. Maintain your lifestyle with annual glucose screenings.',
+      'MODERATE':  'Consult your physician for a glucose tolerance test. Improve diet and exercise.',
+      'HIGH':      'Please consult a doctor soon. HbA1c and OGTT diagnostic tests are recommended.',
+      'VERY HIGH': 'Seek medical attention promptly. An endocrinologist evaluation is strongly advised.'
+    }[riskLevel] || '';
+
+    /* Build warning signs HTML */
+    var warnHTML = '';
+    if (data.warnings && data.warnings.length > 0) {
+      warnHTML = '<div style="margin:12px 0;padding:10px 13px;background:#fff9f0;border-radius:8px;border-left:3px solid #f39c12;">';
+      warnHTML += '<div style="font-size:12px;font-weight:600;color:#d68910;margin-bottom:7px;">⚠️ Warning Signs Detected (' + data.warnings.length + ')</div>';
+      data.warnings.forEach(function(w) {
+        var ic = w.severity === 'danger' ? '🔴' : '⚠️';
+        warnHTML += '<div style="font-size:12px;color:#5d7a93;margin-bottom:4px;">' + ic + ' <strong>' + w.field + '</strong> (' + w.value + '): ' + w.hint + '</div>';
+      });
+      warnHTML += '</div>';
+    }
+
+    /* Build field-by-field pills */
+    var statusColor = { normal:'#1e8449', warning:'#d68910', danger:'#c0392b', unknown:'#5d7a93' };
+    var statusBg    = { normal:'#eafaf1', warning:'#fef9e7', danger:'#fff5f5', unknown:'#f0f4f8' };
+    var pillsHTML = '<div class="res-pills" style="grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:7px;margin:12px 0;">';
+    (data.field_analysis || []).forEach(function(fa) {
+      var sc = statusColor[fa.status] || '#5d7a93';
+      var sb = statusBg[fa.status]   || '#f0f4f8';
+      pillsHTML += '<div class="res-pill" style="background:' + sb + ';border-radius:8px;padding:8px;text-align:center;" title="' + fa.hint + '">';
+      pillsHTML += '<div class="pl" style="font-size:10px;color:#5d7a93;margin-bottom:2px;">' + fa.field + '</div>';
+      pillsHTML += '<div class="pv" style="font-size:11px;font-weight:600;color:' + sc + ';">' + fa.value + '</div>';
+      pillsHTML += '</div>';
+    });
+    pillsHTML += '</div>';
+
+    /* Render result box */
+    var rb = document.getElementById('result-box');
+    rb.className = 'result-box ' + levelClass;
+    rb.style.display = 'block';
+    rb.innerHTML =
+      '<div class="res-head">' +
+        '<div class="res-icon" style="font-size:30px;">' + riskEmoji + '</div>' +
+        '<div>' +
+          '<div class="res-title" style="color:' + riskColor + ';font-size:17px;font-weight:700;">' + riskLevel + ' RISK</div>' +
+          '<div class="res-sub" style="font-size:13px;color:#5d7a93;">Model probability: <strong style="color:' + riskColor + ';font-size:16px;">' + pct + '%</strong></div>' +
+        '</div>' +
+      '</div>' +
+      '<div class="res-bar-wrap" style="margin:10px 0;"><div class="res-bar" style="width:' + pct + '%;background:' + riskColor + ';transition:width 1s ease;"></div></div>' +
+      '<p style="font-size:13px;color:#1a2533;margin:8px 0 4px;">💬 <em>' + advice + '</em></p>' +
+      '<p style="font-size:11px;color:#999;margin-bottom:8px;">Powered by ' + (data.model_used || 'ML Model') + '  ·  Model AUC: ' + (data.test_auc || 'N/A') + '</p>' +
+      warnHTML +
+      pillsHTML +
+      '<div class="res-btns">' +
+        '<button class="rbtn rbtn-primary" onclick="downloadReport()">⬇️ Download Report</button>' +
+        '<button class="rbtn rbtn-sec" onclick="goView(\'guidelines\')">📋 View Guidelines</button>' +
+      '</div>';
+
+    rb.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    toast('Risk assessment complete!', 'success');
+  })
+  .catch(function(err) {
+    btn.textContent = '🧮 Calculate My Diabetes Risk';
+    btn.disabled = false;
+    toast('Could not reach server. Is Flask running?', 'error');
+    console.error(err);
+  });
+}
+
+/* ---- DOWNLOAD REPORT ---- */
+function downloadReport() {
+  if (!lastResult || !lastInputs) {
+    toast('No report to download yet. Run the assessment first.', 'error');
+    return;
+  }
+
+  var p   = lastResult;
+  var inp = lastInputs;
+  var now = new Date();
+  var dateStr = now.toLocaleDateString('en-IN', { weekday:'long', day:'numeric', month:'long', year:'numeric' });
+  var timeStr = now.toLocaleTimeString('en-IN', { hour:'2-digit', minute:'2-digit' });
+
+  /* Risk colour */
+  var rColor = p.risk_color || '#1a5276';
+
+  /* Patient info from login */
+  var patName   = (user && user.name)    || '—';
+  var patEmail  = (user && user.email)   || '—';
+  var patDob    = (user && user.dob)     || '—';
+  var patGender = (user && user.gender)  || '—';
+  var patPhone  = (user && user.phone)   || '—';
+  var patAge    = (user && user.age)     || '—';
+  var patId     = (user && user.pid)     || '—';
+
+  /* Advice map */
+  var adviceMap = {
+    'LOW':       'Your biomarkers look healthy. Maintain your current lifestyle. Schedule annual glucose screenings and continue a balanced diet and regular exercise.',
+    'MODERATE':  'Consult your physician for a full glucose tolerance test. Review dietary habits, increase physical activity, and monitor your blood glucose regularly.',
+    'HIGH':      'Please consult a doctor as soon as possible. HbA1c and OGTT diagnostic tests are recommended. Consider a referral to an endocrinologist.',
+    'VERY HIGH': 'Seek medical attention promptly. An endocrinologist evaluation is strongly advised. Do not delay — early intervention significantly improves outcomes.'
+  };
+  var advice = adviceMap[p.risk_level] || '';
+
+  /* Build warnings rows */
+  var warnRows = '';
+  if (p.warnings && p.warnings.length > 0) {
+    p.warnings.forEach(function(w) {
+      var sev   = w.severity === 'danger' ? '#c0392b' : '#d68910';
+      var label = w.severity === 'danger' ? 'DANGER' : 'WARNING';
+      warnRows += '<tr>' +
+        '<td style="padding:7px 10px;border-bottom:1px solid #eee;font-weight:600;color:' + sev + ';">' + w.field + '</td>' +
+        '<td style="padding:7px 10px;border-bottom:1px solid #eee;">' + w.value + '</td>' +
+        '<td style="padding:7px 10px;border-bottom:1px solid #eee;">' + w.hint + '</td>' +
+        '<td style="padding:7px 10px;border-bottom:1px solid #eee;"><span style="background:' + sev + ';color:#fff;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:700;">' + label + '</span></td>' +
+      '</tr>';
+    });
+  } else {
+    warnRows = '<tr><td colspan="4" style="padding:10px;color:#27ae60;text-align:center;">✅ No individual warning signs detected</td></tr>';
+  }
+
+  /* Build biomarker rows */
+  var fieldRows = '';
+  (p.field_analysis || []).forEach(function(fa) {
+    var sc = { normal:'#1e8449', warning:'#d68910', danger:'#c0392b', unknown:'#5d7a93' }[fa.status] || '#5d7a93';
+    var icon = { normal:'✅', warning:'⚠️', danger:'🔴', unknown:'❓' }[fa.status] || '❓';
+    fieldRows += '<tr>' +
+      '<td style="padding:7px 10px;border-bottom:1px solid #eee;font-weight:500;">' + fa.field + '</td>' +
+      '<td style="padding:7px 10px;border-bottom:1px solid #eee;font-weight:600;color:' + sc + ';">' + fa.value + '</td>' +
+      '<td style="padding:7px 10px;border-bottom:1px solid #eee;">' + icon + ' ' + fa.hint + '</td>' +
+    '</tr>';
+  });
+
+  /* Build the full report HTML */
+  var html = '<!DOCTYPE html><html><head><meta charset="UTF-8">' +
+    '<title>DiabetesGuard Report — ' + patName + '</title>' +
+    '<style>' +
+      'body{font-family:Georgia,serif;color:#1a2533;margin:0;padding:0;background:#fff;}' +
+      '.page{max-width:760px;margin:0 auto;padding:40px 44px;}' +
+      'h1,h2,h3{font-family:Georgia,serif;margin:0;}' +
+      'table{width:100%;border-collapse:collapse;font-size:13px;}' +
+      'th{background:#f0f4f8;padding:8px 10px;text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:#5d7a93;}' +
+      '.section{margin-bottom:28px;}' +
+      '.divider{border:none;border-top:1px solid #d1dce8;margin:22px 0;}' +
+      '@media print{body{-webkit-print-color-adjust:exact;print-color-adjust:exact;}}' +
+    '</style></head><body><div class="page">' +
+
+    /* Header */
+    '<div style="background:linear-gradient(135deg,#0d3b5e,#0e6655);color:#fff;padding:28px 32px;border-radius:10px;margin-bottom:28px;">' +
+      '<div style="display:flex;justify-content:space-between;align-items:flex-start;">' +
+        '<div>' +
+          '<div style="font-size:11px;letter-spacing:1px;text-transform:uppercase;opacity:.7;margin-bottom:6px;">DiabetesGuard Medical Portal</div>' +
+          '<h1 style="font-size:24px;margin-bottom:4px;">Diabetes Risk Assessment Report</h1>' +
+          '<div style="opacity:.75;font-size:13px;">' + dateStr + ' &nbsp;·&nbsp; ' + timeStr + '</div>' +
+        '</div>' +
+        '<div style="text-align:right;">' +
+          '<div style="font-size:11px;opacity:.6;margin-bottom:4px;">Patient ID</div>' +
+          '<div style="font-size:15px;font-weight:700;letter-spacing:1px;">' + patId + '</div>' +
+        '</div>' +
+      '</div>' +
+    '</div>' +
+
+    /* Risk Summary */
+    '<div class="section">' +
+      '<div style="border:2px solid ' + rColor + ';border-radius:10px;padding:20px 24px;display:flex;align-items:center;gap:20px;">' +
+        '<div style="font-size:48px;line-height:1;">' + (p.risk_emoji || '📊') + '</div>' +
+        '<div style="flex:1;">' +
+          '<div style="font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:#5d7a93;margin-bottom:4px;">AI Risk Assessment Result</div>' +
+          '<div style="font-size:26px;font-weight:700;color:' + rColor + ';margin-bottom:4px;">' + p.risk_level + ' RISK</div>' +
+          '<div style="font-size:14px;color:#1a2533;">Diabetes Probability: <strong style="color:' + rColor + ';font-size:20px;">' + p.probability + '%</strong></div>' +
+          '<div style="margin-top:10px;height:8px;background:#e8eef4;border-radius:4px;overflow:hidden;">' +
+            '<div style="width:' + p.probability + '%;height:100%;background:' + rColor + ';border-radius:4px;"></div>' +
+          '</div>' +
+        '</div>' +
+        '<div style="text-align:right;">' +
+          '<div style="font-size:11px;color:#5d7a93;margin-bottom:3px;">Model</div>' +
+          '<div style="font-size:13px;font-weight:600;">' + (p.model_used || 'ML Model') + '</div>' +
+          '<div style="font-size:11px;color:#5d7a93;margin-top:8px;">AUC Score</div>' +
+          '<div style="font-size:13px;font-weight:600;">' + (p.test_auc || 'N/A') + '</div>' +
+        '</div>' +
+      '</div>' +
+      '<div style="background:#f8f9fa;border-left:4px solid ' + rColor + ';padding:12px 16px;margin-top:14px;border-radius:0 6px 6px 0;font-size:13px;color:#1a2533;">' +
+        '💬 <em>' + advice + '</em>' +
+      '</div>' +
+    '</div>' +
+
+    '<hr class="divider">' +
+
+    /* Patient Information */
+    '<div class="section">' +
+      '<h2 style="font-size:15px;font-weight:700;color:#1a5276;margin-bottom:14px;text-transform:uppercase;letter-spacing:.5px;">Patient Information</h2>' +
+      '<table>' +
+        '<tr>' +
+          '<td style="padding:7px 10px;border-bottom:1px solid #eee;color:#5d7a93;width:30%;font-size:12px;">Full Name</td>' +
+          '<td style="padding:7px 10px;border-bottom:1px solid #eee;font-weight:600;">' + patName + '</td>' +
+          '<td style="padding:7px 10px;border-bottom:1px solid #eee;color:#5d7a93;width:25%;font-size:12px;">Patient ID</td>' +
+          '<td style="padding:7px 10px;border-bottom:1px solid #eee;font-weight:600;">' + patId + '</td>' +
+        '</tr>' +
+        '<tr>' +
+          '<td style="padding:7px 10px;border-bottom:1px solid #eee;color:#5d7a93;font-size:12px;">Date of Birth</td>' +
+          '<td style="padding:7px 10px;border-bottom:1px solid #eee;">' + patDob + '</td>' +
+          '<td style="padding:7px 10px;border-bottom:1px solid #eee;color:#5d7a93;font-size:12px;">Age</td>' +
+          '<td style="padding:7px 10px;border-bottom:1px solid #eee;">' + patAge + ' years</td>' +
+        '</tr>' +
+        '<tr>' +
+          '<td style="padding:7px 10px;border-bottom:1px solid #eee;color:#5d7a93;font-size:12px;">Gender</td>' +
+          '<td style="padding:7px 10px;border-bottom:1px solid #eee;">' + patGender + '</td>' +
+          '<td style="padding:7px 10px;border-bottom:1px solid #eee;color:#5d7a93;font-size:12px;">Phone</td>' +
+          '<td style="padding:7px 10px;border-bottom:1px solid #eee;">' + patPhone + '</td>' +
+        '</tr>' +
+        '<tr>' +
+          '<td style="padding:7px 10px;color:#5d7a93;font-size:12px;">Email</td>' +
+          '<td style="padding:7px 10px;" colspan="3">' + patEmail + '</td>' +
+        '</tr>' +
+      '</table>' +
+    '</div>' +
+
+    '<hr class="divider">' +
+
+    /* Biomarker Inputs */
+    '<div class="section">' +
+      '<h2 style="font-size:15px;font-weight:700;color:#1a5276;margin-bottom:14px;text-transform:uppercase;letter-spacing:.5px;">Clinical Biomarker Inputs</h2>' +
+      '<table>' +
+        '<thead><tr>' +
+          '<th>Biomarker</th><th>Value Entered</th><th>Assessment</th>' +
+        '</tr></thead>' +
+        '<tbody>' + fieldRows + '</tbody>' +
+      '</table>' +
+    '</div>' +
+
+    '<hr class="divider">' +
+
+    /* Warning Signs */
+    '<div class="section">' +
+      '<h2 style="font-size:15px;font-weight:700;color:#1a5276;margin-bottom:14px;text-transform:uppercase;letter-spacing:.5px;">Warning Signs Detected</h2>' +
+      '<table>' +
+        '<thead><tr>' +
+          '<th>Field</th><th>Value</th><th>Clinical Note</th><th>Severity</th>' +
+        '</tr></thead>' +
+        '<tbody>' + warnRows + '</tbody>' +
+      '</table>' +
+    '</div>' +
+
+    '<hr class="divider">' +
+
+    /* Recommendations */
+    '<div class="section">' +
+      '<h2 style="font-size:15px;font-weight:700;color:#1a5276;margin-bottom:14px;text-transform:uppercase;letter-spacing:.5px;">Recommended Next Steps</h2>' +
+      '<table>' +
+        '<tr><td style="padding:7px 10px;border-bottom:1px solid #eee;">→</td><td style="padding:7px 10px;border-bottom:1px solid #eee;">Schedule an HbA1c test if not done in the last 3 months</td></tr>' +
+        '<tr><td style="padding:7px 10px;border-bottom:1px solid #eee;">→</td><td style="padding:7px 10px;border-bottom:1px solid #eee;">Request a fasting plasma glucose and 2-hr OGTT from your physician</td></tr>' +
+        '<tr><td style="padding:7px 10px;border-bottom:1px solid #eee;">→</td><td style="padding:7px 10px;border-bottom:1px solid #eee;">Annual eye exam for diabetic retinopathy screening</td></tr>' +
+        '<tr><td style="padding:7px 10px;border-bottom:1px solid #eee;">→</td><td style="padding:7px 10px;border-bottom:1px solid #eee;">Lipid profile and kidney function tests every 6 months</td></tr>' +
+        '<tr><td style="padding:7px 10px;">→</td><td style="padding:7px 10px;">Maintain 150 min/week moderate aerobic exercise per WHO guidelines</td></tr>' +
+      '</table>' +
+    '</div>' +
+
+    /* Disclaimer */
+    '<div style="background:#fef9e7;border:1px solid #f39c12;border-radius:8px;padding:14px 16px;font-size:11px;color:#5d7a93;line-height:1.7;margin-top:8px;">' +
+      '<strong style="color:#d68910;">⚠️ Medical Disclaimer:</strong> This report is generated by an AI screening tool (DiabetesGuard) for informational purposes only. It does not constitute a clinical diagnosis. The probability score is derived from a machine learning model trained on population data and may not reflect individual circumstances. Please consult a qualified healthcare professional before making any medical decisions. In case of emergency, call <strong>112</strong>.' +
+    '</div>' +
+
+    /* Footer */
+    '<div style="margin-top:28px;padding-top:16px;border-top:1px solid #d1dce8;display:flex;justify-content:space-between;font-size:11px;color:#999;">' +
+      '<span>DiabetesGuard — AI Medical Screening Portal</span>' +
+      '<span>Generated: ' + dateStr + ', ' + timeStr + '</span>' +
+    '</div>' +
+
+  '</div></body></html>';
+
+  /* Open in new window and trigger print-to-PDF */
+  var win = window.open('', '_blank', 'width=820,height=900');
+  win.document.write(html);
+  win.document.close();
+  win.focus();
+  setTimeout(function() { win.print(); }, 600);
+  toast('Report opened — use "Save as PDF" in the print dialog.', 'success');
+}
+
+
+function clearForm() {
+  ['f-glucose','f-bp','f-skin','f-insulin','f-bmi','f-dpf','f-age'].forEach(function(id){
+    document.getElementById(id).value = '';
+  });
+  var rb = document.getElementById('result-box');
+  rb.style.display = 'none';
+  rb.innerHTML = '';
+  toast('Form cleared.', '');
+}
+
+/* ---- TOAST ---- */
+function toast(msg, type) {
+  var t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast' + (type === 'success' ? ' t-success' : type === 'error' ? ' t-error' : '');
+  t.classList.add('show');
+  setTimeout(function(){ t.classList.remove('show'); }, 3200);
+}
+
+/* enter key on password */
+document.getElementById('l-pass').addEventListener('keydown', function(e){ if (e.key==='Enter') doLogin(); });
+</script>
+</body>
+</html>
